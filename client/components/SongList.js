@@ -8,14 +8,11 @@ class SongList extends Component {
     if (this.props.data.loading) {
       return <div>Loading...</div>;
     }
-    return this.props.data.songs.map(({id, title}, index) => {
+    return this.props.data.songs.map(({ id, title }, index) => {
       return (
         <li key={index} className="collection-item">
-          {title}
-          <i
-            className="material-icons"
-            onClick={() => this.onSongDelete(id)}
-          >
+          <Link to={`/songs/${id}`}>{title}</Link>
+          <i className="material-icons" onClick={() => this.onSongDelete(id)}>
             delete
           </i>
         </li>
@@ -24,9 +21,9 @@ class SongList extends Component {
   }
 
   onSongDelete(id) {
-    this.props.mutate({ variables: {id}}).then(() => {
-      this.props.data.refetch()
-    })
+    this.props.mutate({ variables: { id } }).then(() => {
+      this.props.data.refetch();
+    });
   }
 
   render() {
