@@ -8,13 +8,25 @@ class SongList extends Component {
     if (this.props.data.loading) {
       return <div>Loading...</div>;
     }
-    return this.props.data.songs.map((song, index) => {
+    return this.props.data.songs.map(({id, title}, index) => {
       return (
         <li key={index} className="collection-item">
-          {song.title}
+          {title}
+          <i
+            className="material-icons"
+            onClick={() => this.onSongDelete(id)}
+          >
+            delete
+          </i>
         </li>
       );
     });
+  }
+
+  onSongDelete(id) {
+    this.props.mutate({ variables: {id}}).then(() => {
+      this.props.data.refetch()
+    })
   }
 
   render() {
@@ -29,4 +41,12 @@ class SongList extends Component {
   }
 }
 
-export default graphql(fetchSongs)(SongList);
+const mutation = gql`
+  mutation DeleteSong($id: ID) {
+    deleteSong(id: $id) {
+      id
+    }
+  }
+`;
+
+export default graphql(mutation)(graphql(fetchSongs)(SongList));
