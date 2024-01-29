@@ -4,11 +4,15 @@ import { graphql } from "react-apollo";
 import { Link } from "react-router";
 import fetchSongs from "../queries/fetchSongs";
 class SongList extends Component {
+
   renderSongs() {
+    const songs = this.props.data.songs;
     if (this.props.data.loading) {
       return <div>Loading...</div>;
     }
-    return this.props.data.songs.map(({ id, title }, index) => {
+    if(!songs.length) return (<h2>There are no songs listed!</h2>)
+
+    return songs.map(({ id, title }, index) => {
       return (
         <li key={index} className="collection-item">
           <Link to={`/songs/${id}`}>{title}</Link>

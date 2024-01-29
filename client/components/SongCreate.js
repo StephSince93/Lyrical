@@ -21,11 +21,9 @@ class SongCreate extends Component {
         variables: {
           title: this.state.title,
         },
-        refetchQueries: [{ fetchSongs }],
+        refetchQueries: [{ query: fetchSongs }],
       })
-      .then((res) => {
-        hashHistory.push("/");
-      })
+      .then(() => hashHistory.push("/"))
       .catch((error) => {});
   }
   render() {
@@ -47,6 +45,7 @@ class SongCreate extends Component {
 const mutation = gql`
   mutation AddSong($title: String) {
     addSong(title: $title) {
+      id
       title
     }
   }
